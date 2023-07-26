@@ -63,10 +63,7 @@ finalDict = {"T1": [], "T2": [], "T3": [], "T4": [], "T5": [], "T6": [], "T7": [
 #constant file to write to
 hostingPageFile= "hostingPage.html" 
 
-try:
-    f = open(hostingPageFile, "w")
-except:
-    f = open(hostingPageFile, "x")
+
 
 
 # f.close()
@@ -163,6 +160,10 @@ def capitalizeAfterDash(string):
     return string
 
 def printListings(): 
+    try:
+        f = open(hostingPageFile, "w")
+    except:
+        f = open(hostingPageFile, "x")
     f.write(htmlVariables.preListings)
     f.write("\n")
     for tier in finalDict:
@@ -200,7 +201,7 @@ def printListings():
 def printAccepts(): 
     #TODO
     #also automate the acceptances part
-    
+
     # if we count the lines of the prelisting we can at least iterate to that point
     #and then start overwriting? 
     #and then stop once we get to the end?

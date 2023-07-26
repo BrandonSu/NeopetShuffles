@@ -68,8 +68,7 @@ try:
 except:
     f = open(hostingPageFile, "x")
 
-f.write(htmlVariables.preListings)
-f.write("\n")
+
 # f.close()
 #'a' is append to end, 
 # 'w' is write over
@@ -164,6 +163,8 @@ def capitalizeAfterDash(string):
     return string
 
 def printListings(): 
+    f.write(htmlVariables.preListings)
+    f.write("\n")
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
             continue
@@ -191,12 +192,19 @@ def printListings():
             # print("\n<br>\n")
             f.write(pet.username)
             f.write("\n<br>\n")
-            
+
     f.write(htmlVariables.postUsernames)
 
 
 
 def printAccepts(): 
+    #TODO
+    #also automate the acceptances part
+    
+    # if we count the lines of the prelisting we can at least iterate to that point
+    #and then start overwriting? 
+    #and then stop once we get to the end?
+
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
             continue
@@ -260,6 +268,7 @@ def shuffle():
     #python3 shuffle.py listings.txt accepts.txt missing
     if len(sys.argv) > 1:
         filename = sys.argv[1]
+        #adding to dictionary all the listings objects
         with open(filename, 'r') as file:
             current_tier = None
             current_list = []

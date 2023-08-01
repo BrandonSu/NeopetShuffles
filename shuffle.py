@@ -183,6 +183,10 @@ def printListings():
     #usernames portion
     # print("************************************")
     # print()
+    printUsers(f)
+  
+
+def printUsers(f):
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
             continue
@@ -196,8 +200,6 @@ def printListings():
 
     f.write(htmlVariables.postUsernames)
 
-
-
 def printAccepts(): 
     #TODO
     #also automate the acceptances part
@@ -205,17 +207,32 @@ def printAccepts():
     # if we count the lines of the prelisting we can at least iterate to that point
     #and then start overwriting? 
     #and then stop once we get to the end?
+    try:
+        f = open(hostingPageFile, "w")
+    except:
+        f = open(hostingPageFile, "x")
+    f.write(htmlVariables.preListings)
+    f.write("\n")
 
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
             continue
-        print("<br> \n")
+
+        # print("<br> \n")
+        f.write("<br> \n")
+
         for pet in finalDict[tier]:
             if pet.accepts:
-                print(pet.accepts)
+                f.write(pet.accepts)
+                # print(pet.accepts)
             else:
-                print(pet.listing)
-            print("\n<br>\n")
+                f.write(pet.listing)
+                # print(pet.listing)
+            # print("\n<br>\n")
+            f.write("\n<br>\n")
+    f.write(htmlVariables.postListingsPreUsernames)
+    printUsers(f)
+    
 
 def printMissing():
      print("\nMISSING DECISIONS ON THE FOLLOWING PETS, let me know if I missed you \n no rush \n")

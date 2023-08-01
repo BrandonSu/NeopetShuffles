@@ -61,23 +61,7 @@ python3 shuffle.py listings.txt accepts.txt missing
 finalDict = {"T1": [], "T2": [], "T3": [], "T4": [], "T5": [], "T6": [], "T7": [], "T8": [], "T9": [], "T10": []}
 
 #constant file to write to
-hostingPageFile= "hostingPage.html" 
-
-
-
-
-# f.close()
-#'a' is append to end, 
-# 'w' is write over
-# 'x' is to create new -> if no file exists create, maybe do some try catch
-
-# fileData = f.readlines()
-# #now fileData is like an array of all the lines?
-# fileData[2] = "newline"
-#changes the 3rd line to be 'newLine'
-
-
-
+hostPageFile= "hostPage.html" 
 
 class Listing:
   def __init__(self, listing, tier, petname="", username="", accepts=""):
@@ -159,17 +143,9 @@ def capitalizeAfterDash(string):
  
     return string
 
-def mycmp(a, b):
-    print("comparing ", a, " and ", b)
-    if a > b:
-        return 1
-    elif a < b:
-        return -1
-    else:
-        return 0
-
 def sortListings():
     #ideally its just numbers and underscores at top
+    #not very efficient but gets the job done
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
             continue
@@ -181,75 +157,66 @@ def sortListings():
                 newList.insert(0, listing)
         finalDict[tier] = newList
 
-def printListings(): 
+def writeListings(): 
     try:
-        f = open(hostingPageFile, "w")
+        f = open(hostPageFile, "w")
     except:
-        f = open(hostingPageFile, "x")
+        f = open(hostPageFile, "x")
     f.write(htmlVariables.preListings)
     f.write("\n")
+
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
             continue
-        # print("<br> \n")
         f.write("<br> \n")
 
         for pet in finalDict[tier]:
-            # print(pet.listing)
-            # print("\n<br>\n")
-            #basically here
             f.write(pet.listing)
             f.write("\n<br>\n")
     #assuming were not doing usernames
     f.write(htmlVariables.postListingsPreUsernames)
 
-    #usernames portion
-    # print("************************************")
-    # print()
-    printUsers(f)
+    writeUsers(f)
+    #if you dont want to write usernames you can just call
+    #f.write(htmlVariables.postUsernames)
+    #to close out the html
   
-
-def printUsers(f):
+def writeUsers(f):
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
             continue
-        # print("<br> \n")
         f.write("<br> \n")
         for pet in finalDict[tier]:
-            # print(pet.username)
-            # print("\n<br>\n")
             f.write(pet.username)
             f.write("\n<br>\n")
 
     f.write(htmlVariables.postUsernames)
 
-def printAccepts(): 
+def writeAccepts(): 
     try:
-        f = open(hostingPageFile, "w")
+        f = open(hostPageFile, "w")
     except:
-        f = open(hostingPageFile, "x")
+        f = open(hostPageFile, "x")
     f.write(htmlVariables.preListings)
     f.write("\n")
 
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
             continue
-
-        # print("<br> \n")
         f.write("<br> \n")
 
         for pet in finalDict[tier]:
             if pet.accepts:
                 f.write(pet.accepts)
-                # print(pet.accepts)
             else:
                 f.write(pet.listing)
-                # print(pet.listing)
-            # print("\n<br>\n")
             f.write("\n<br>\n")
+
     f.write(htmlVariables.postListingsPreUsernames)
-    printUsers(f)
-    
+    writeUsers(f)
+    #if you dont want to write usernames you can just call
+    #f.write(htmlVariables.postUsernames)
+    #to close out the html
 
 def printMissing():
      print("\nMISSING DECISIONS ON THE FOLLOWING PETS, let me know if I missed you \n no rush \n")
@@ -298,42 +265,45 @@ def addAccepts(filename):
                             item.accepts = f"<b> {item.listing} </b> ACCEPTS {accepts}"
                         if shouldPass(line):
                             item.accepts = f"<b> {item.listing} </b> PASS"
-            
+
+def fillDict(filename):
+    with open(filename, 'r') as file:
+        current_tier = None
+        current_list = []
+        for line in file:
+            line = line.strip()
+            if line.startswith('@'):
+                for item in current_list:
+                    item.username = line
+                    finalDict[item.tier].append(item)
+                current_list = []
+                current_tier = None
+    
+            if line.startswith('Listing:'):
+                current_tier = None
+    
+            current_tier = getCurrentTier(line)
+            listing = prettyFormat(line)
+            if line and current_tier:
+                current_list.append(Listing(listing, current_tier, extract_pet_name(listing)))
+
 def shuffle():
     #python3 shuffle.py listings.txt accepts.txt missing
     if len(sys.argv) > 1:
         filename = sys.argv[1]
         #adding to dictionary all the listings objects
-        with open(filename, 'r') as file:
-            current_tier = None
-            current_list = []
-            for line in file:
-                line = line.strip()
-                if line.startswith('@'):
-                    for item in current_list:
-                        item.username = line
-                        finalDict[item.tier].append(item)
-                    current_list = []
-                    current_tier = None
-     
-                if line.startswith('Listing:'):
-                    current_tier = None
-     
-                current_tier = getCurrentTier(line)
-                listing = prettyFormat(line)
-                if line and current_tier:
-                    current_list.append(Listing(listing, current_tier, extract_pet_name(listing)))
+        fillDict(filename)
         sortListings()
         
         if len(sys.argv) > 2:
             second_filename = sys.argv[2]
             print()
             addAccepts(second_filename)
-            printAccepts()
+            writeAccepts()
             if len(sys.argv) > 3:
                 printMissing()
         else:
-            printListings()
+            writeListings()
     else:
         print("Text file not provided.")
      

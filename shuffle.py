@@ -159,6 +159,28 @@ def capitalizeAfterDash(string):
  
     return string
 
+def mycmp(a, b):
+    print("comparing ", a, " and ", b)
+    if a > b:
+        return 1
+    elif a < b:
+        return -1
+    else:
+        return 0
+
+def sortListings():
+    #ideally its just numbers and underscores at top
+    for tier in finalDict:
+        if len(finalDict[tier]) == 0:
+            continue
+        newList = []
+        for listing in finalDict[tier]:
+            if listing.petname.isalpha():
+                newList.append(listing)
+            else:
+                newList.insert(0, listing)
+        finalDict[tier] = newList
+
 def printListings(): 
     try:
         f = open(hostingPageFile, "w")
@@ -171,6 +193,7 @@ def printListings():
             continue
         # print("<br> \n")
         f.write("<br> \n")
+
         for pet in finalDict[tier]:
             # print(pet.listing)
             # print("\n<br>\n")
@@ -201,12 +224,6 @@ def printUsers(f):
     f.write(htmlVariables.postUsernames)
 
 def printAccepts(): 
-    #TODO
-    #also automate the acceptances part
-
-    # if we count the lines of the prelisting we can at least iterate to that point
-    #and then start overwriting? 
-    #and then stop once we get to the end?
     try:
         f = open(hostingPageFile, "w")
     except:
@@ -306,9 +323,10 @@ def shuffle():
                 listing = prettyFormat(line)
                 if line and current_tier:
                     current_list.append(Listing(listing, current_tier, extract_pet_name(listing)))
+        sortListings()
+        
         if len(sys.argv) > 2:
             second_filename = sys.argv[2]
-            print("************************************")
             print()
             addAccepts(second_filename)
             printAccepts()

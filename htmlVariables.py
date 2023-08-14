@@ -1,4 +1,4 @@
-preListings = '''<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+preQuiggleListings = '''<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" vspace="0" hspace="0" bgcolor="dddd77">
         <tbody>
             <tr>
@@ -217,7 +217,7 @@ preListings = '''<body marginwidth="0" marginheight="0" topmargin="0" leftmargin
                     <center>
 
                     '''
-postListingsPreUsernames = '''
+postQuiggleListingsPreRegPot = '''
     </center>
                 </div>
                 <div class="box">
@@ -225,11 +225,26 @@ postListingsPreUsernames = '''
                         <h1>Regular Pot</h1>
                     </center>
                     <center>
+'''
 
 
-                    </center>
+                
+                   
+postRegListingsPreCopyPaste = '''    
+            </center>
                 </div>
-            </div>
+
+                    <div class = "box">
+                    <center>
+                        <h1>Copy Paste List</h1>
+                    </center>
+                    <center>
+                    '''
+          
+postCopyPastePreQuiggleUsernames = '''  
+        </center>
+         </div>
+         </div>
             <div id="middle">
                 <div class="box">
                     <center>
@@ -255,10 +270,9 @@ postListingsPreUsernames = '''
                     <center>
                         <h1 class="highlight">Usernames</h1>
                     </center>
-                    <center>
-                    '''
+                    <center>'''
 
-postUsernames = '''
+postQuiggleUsernamesPreRegUsernames ='''
    </center>
                 </div>
 
@@ -267,7 +281,9 @@ postUsernames = '''
                         <h1 class="highlight">Usernames</h1>
                     </center>
                     <center>
+                    '''
 
+postRegUsernames = '''
                     </center>
                 </div>
             </div>
@@ -323,6 +339,32 @@ postUsernames = '''
         <br>
         <br>
         <br><br>
+        <br>
+        <br>
+         <br>
+        <br><br><br>
+        <br>
+        <br>
+        <br>
+         <br>
+        <br><br><br>
+        <br>
+        <br>
+        <br>
+                <br>
+        <br>
+        <br>
+         <br>
+        <br><br><br>
+        <br>
+        <br>
+        <br>
+                <br>
+        <br>
+        <br>
+         <br>
+        <br><br><br>
+        <br>
         <br>
         <br>
     </div>

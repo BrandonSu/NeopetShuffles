@@ -64,12 +64,13 @@ finalDict = {"T1": [], "T2": [], "T3": [], "T4": [], "T5": [], "T6": [], "T7": [
 hostPageFile= "hostPage.html" 
 
 class Listing:
-  def __init__(self, listing, tier, petname="", username="", accepts=""):
+  def __init__(self, listing, tier, petname="", quiggle= True, username="", accepts=""):
     self.listing = listing
     self.tier = tier
     self.username = username
     self.petname = petname
     self.accepts = accepts
+    self.quiggle = quiggle
  
 def getCurrentTier(line):
     words = " ".join(line.split()[1:])
@@ -79,9 +80,17 @@ def getCurrentTier(line):
         if tier in words.upper():
             return tier
 
+def getQuiggleStatus(line):
+    words = " ".join(line.split()[-1:])
+    #basicaly if 'reg' is in the last word
+    if "reg" in words.lower():
+        return False
+    return True
+
 def extract_pet_name(listing):
     words = listing.split()
     first_word = words[0]
+    first_word = cleanup(first_word)
     if len(first_word) > 2:
         return first_word
     return "" 
@@ -162,7 +171,7 @@ def writeListings():
         f = open(hostPageFile, "w")
     except:
         f = open(hostPageFile, "x")
-    f.write(htmlVariables.preListings)
+    f.write(htmlVariables.preQuiggleListings)
     f.write("\n")
 
     for tier in finalDict:
@@ -171,33 +180,74 @@ def writeListings():
         f.write("<br> \n")
 
         for pet in finalDict[tier]:
-            f.write(pet.listing)
-            f.write("\n<br>\n")
-    #assuming were not doing usernames
-    f.write(htmlVariables.postListingsPreUsernames)
+            if pet.quiggle:
+                f.write(pet.listing)
+                f.write("\n<br>\n")
+    f.write(htmlVariables.postQuiggleListingsPreRegPot)
+
+    #adding in regular pot
+    for tier in finalDict:
+        if len(finalDict[tier]) == 0:
+            continue
+        
+
+        for pet in finalDict[tier]:
+            if not pet.quiggle:
+                f.write(pet.listing)
+                f.write("\n<br>\n")
+                f.write("<br> \n")
+
+    f.write(htmlVariables.postRegListingsPreCopyPaste)
+
+    writeCopyPasteList(f)
+    f.write(htmlVariables.postCopyPastePreQuiggleUsernames)
 
     writeUsers(f)
     #if you dont want to write usernames you can just call
     #f.write(htmlVariables.postUsernames)
     #to close out the html
-  
+
+def writeCopyPasteList(f):
+    for tier in finalDict:
+        if len(finalDict[tier]) == 0:
+            continue
+        f.write("<br> \n")
+
+        for pet in finalDict[tier]:
+            f.write(pet.petname)
+            f.write("\n<br>\n")
+    
+
 def writeUsers(f):
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
             continue
         f.write("<br> \n")
         for pet in finalDict[tier]:
-            f.write(pet.username)
-            f.write("\n<br>\n")
+            if pet.quiggle:
+                f.write(pet.username)
+                f.write("\n<br>\n")
 
-    f.write(htmlVariables.postUsernames)
+    f.write(htmlVariables.postQuiggleUsernamesPreRegUsernames)
+
+    for tier in finalDict:
+        if len(finalDict[tier]) == 0:
+            continue
+       
+        for pet in finalDict[tier]:
+            if not pet.quiggle:
+                f.write(pet.username)
+                f.write("\n<br>\n")
+                f.write("<br> \n")
+
+    f.write(htmlVariables.postRegUsernames)
 
 def writeAccepts(): 
     try:
         f = open(hostPageFile, "w")
     except:
         f = open(hostPageFile, "x")
-    f.write(htmlVariables.preListings)
+    f.write(htmlVariables.preQuiggleListings)
     f.write("\n")
 
     for tier in finalDict:
@@ -206,13 +256,34 @@ def writeAccepts():
         f.write("<br> \n")
 
         for pet in finalDict[tier]:
-            if pet.accepts:
-                f.write(pet.accepts)
-            else:
-                f.write(pet.listing)
-            f.write("\n<br>\n")
+            if pet.quiggle:
+                if pet.accepts:
+                    f.write(pet.accepts)
+                else:
+                    f.write(pet.listing)
+                f.write("\n<br>\n")
 
-    f.write(htmlVariables.postListingsPreUsernames)
+    f.write(htmlVariables.postQuiggleListingsPreRegPot)
+
+    #adding in regular pot
+    for tier in finalDict:
+        if len(finalDict[tier]) == 0:
+            continue
+       
+
+        for pet in finalDict[tier]:
+            if not pet.quiggle:
+                if pet.accepts:
+                    f.write(pet.accepts)
+                else:
+                    f.write(pet.listing)
+                f.write("\n<br>\n")
+                f.write("<br> \n")
+
+    f.write(htmlVariables.postRegListingsPreCopyPaste)
+
+    writeCopyPasteList(f)
+    f.write(htmlVariables.postCopyPastePreQuiggleUsernames)
     writeUsers(f)
     #if you dont want to write usernames you can just call
     #f.write(htmlVariables.postUsernames)
@@ -281,11 +352,12 @@ def fillDict(filename):
     
             if line.startswith('Listing:'):
                 current_tier = None
-    
+
             current_tier = getCurrentTier(line)
             listing = prettyFormat(line)
+            quiggle = getQuiggleStatus(line)
             if line and current_tier:
-                current_list.append(Listing(listing, current_tier, extract_pet_name(listing)))
+                current_list.append(Listing(listing, current_tier, extract_pet_name(listing), quiggle))
 
 def shuffle():
     #python3 shuffle.py listings.txt accepts.txt missing

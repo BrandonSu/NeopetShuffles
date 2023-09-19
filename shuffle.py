@@ -166,14 +166,46 @@ def sortListings():
                 newList.insert(0, listing)
         finalDict[tier] = newList
 
+def writeImages(f):
+    print()
+     #write in images here TODO
+    for tier in finalDict:
+        if len(finalDict[tier]) == 0:
+            continue
+        f.write("<br> \n")
+
+        for pet in finalDict[tier]:
+            if pet.quiggle:
+                f.write('<img src="//pets.neopets.com/cpn/'+pet.petname+'/1/1.png">')
+                f.write("\n<br>\n")
+
+    f.write(htmlVariables.postQuiggleImagesPreRegImages)
+
+    #write in other images here TODO
+    for tier in finalDict:
+        if len(finalDict[tier]) == 0:
+            continue
+
+        for pet in finalDict[tier]:
+            if not pet.quiggle:
+                f.write('<img src="//pets.neopets.com/cpn/'+pet.petname+'/1/1.png">')
+                f.write("\n<br>\n")
+                f.write("<br> \n")
+
+
+    f.write(htmlVariables.postRegImagesPreQuiggleListings)
+
+
 def writeListings(): 
     try:
         f = open(hostPageFile, "w")
     except:
         f = open(hostPageFile, "x")
-    f.write(htmlVariables.preQuiggleListings)
+    f.write(htmlVariables.preQuiggleImages)
     f.write("\n")
 
+    writeImages(f)
+   
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
             continue
@@ -183,7 +215,7 @@ def writeListings():
             if pet.quiggle:
                 f.write(pet.listing)
                 f.write("\n<br>\n")
-    f.write(htmlVariables.postQuiggleListingsPreRegPot)
+    f.write(htmlVariables.postQuigglePreRegListings)
 
     #adding in regular pot
     for tier in finalDict:
@@ -247,8 +279,12 @@ def writeAccepts():
         f = open(hostPageFile, "w")
     except:
         f = open(hostPageFile, "x")
-    f.write(htmlVariables.preQuiggleListings)
+    f.write(htmlVariables.preQuiggleImages)
     f.write("\n")
+
+    f.write(htmlVariables.postQuiggleImagesPreRegImages)
+
+    f.write(htmlVariables.postRegImagesPreQuiggleListings)
 
     for tier in finalDict:
         if len(finalDict[tier]) == 0:
@@ -263,7 +299,7 @@ def writeAccepts():
                     f.write(pet.listing)
                 f.write("\n<br>\n")
 
-    f.write(htmlVariables.postQuiggleListingsPreRegPot)
+    f.write(htmlVariables.postQuigglePreRegListings)
 
     #adding in regular pot
     for tier in finalDict:

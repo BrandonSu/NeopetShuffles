@@ -1,4 +1,4 @@
-preQuiggleListings = '''<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+preQuiggleImages = '''<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" vspace="0" hspace="0" bgcolor="dddd77">
         <tbody>
             <tr>
@@ -125,26 +125,35 @@ preQuiggleListings = '''<body marginwidth="0" marginheight="0" topmargin="0" lef
             font-size: 10pt;
         }
 
-        #left,
+        #left {
+            width: 10px;
+        }
+
+        #middle {
+            width: 485px
+        }
+
         #right {
             width: 285px;
         }
 
-        #middle {
-            width: 310px;
-        }
-
         #left .box {
-            margin: 50px 25px 2px 30px;
+            /* top right botom left  */
+            margin: 50px 0px 0px 20px;
+            width: 1px;
+            margin: 50px 0px 0px 20px;
+            padding-left: 10px;
+            padding-right: 10px;
         }
 
         #middle .box {
-            display: none;
-            margin: 50px 25px;
+            margin: 50px 0px 2px 30px;
+            width: 430px;
+            text-align: left;
         }
 
         #right .box {
-            margin: 50px 0px 50px 30px;
+            margin: 50px 0px 50px 70px;
             width: 150px;
         }
 
@@ -153,6 +162,17 @@ preQuiggleListings = '''<body marginwidth="0" marginheight="0" topmargin="0" lef
             padding: 30px;
             background: #D3C2CF;
         }
+
+        img {
+            width: 20px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .imglist {
+            text-align: right;
+        }
+
 
         .box h1 {
             font-family: 'didot', georgia;
@@ -211,22 +231,47 @@ preQuiggleListings = '''<body marginwidth="0" marginheight="0" topmargin="0" lef
             <!-- <div id="main" style="position: absolute;"> -->
             <div id="left">
                 <div class="box">
+                    
+                    <center>
+                      
+                    </center>
+                    <div class="imglist">
+
+                    '''
+
+postQuiggleImagesPreRegImages = '''
+     </div>
+                </div>
+                <div class="box">
+                    <center>
+                       
+                    </center>
+                     <div class="imglist">
+'''
+
+postRegImagesPreQuiggleListings = '''
+ </div>
+                </div>
+                </div>
+        <div id="middle">
+                <div class="box">
                     <center>
                         <h1>Quiggle Pot</h1>
                     </center>
-                    <center>
+                    <div>
 
-                    '''
-postQuiggleListingsPreRegPot = '''
-    </center>
+'''
+
+postQuigglePreRegListings = '''
+</div>
                 </div>
                 <div class="box">
                     <center>
                         <h1>Regular Pot</h1>
                     </center>
                     <center>
-'''
 
+'''
 
                 
                    
@@ -245,25 +290,7 @@ postCopyPastePreQuiggleUsernames = '''
         </center>
          </div>
          </div>
-            <div id="middle">
-                <div class="box">
-                    <center>
-                        <h1>image list</h1>
-                    </center>
-                    <div class="imglist">
-                        <ul class="imglist">
-                            <li class="img"><img src="//images.neopets.com/items/babypaintbrush.gif"></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="box">
-                    <center>
-                        <h1>hi again</h1>
-                    </center>
-                    x<br><br>
-                    x
-                </div>
-            </div>
+            
             <div id="right">
 
                 <div class="box">
